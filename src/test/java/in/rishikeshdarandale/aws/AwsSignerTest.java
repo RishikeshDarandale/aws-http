@@ -170,6 +170,7 @@ public class AwsSignerTest {
                 .append("\n")
                 .append("host;my-header1;x-amz-date").append("\n")
                 .append("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");
+        System.out.println("Request: \n" + request);
         // verify canonical request
         assertEquals(sb.toString(), signer.getCanonicalRequest());
         sb = new StringBuilder()
@@ -183,7 +184,7 @@ public class AwsSignerTest {
         // verify the signature value
         assertEquals("c9d5ea9f3f72853aea855b47ea873832890dbdd183b4468f858259531a5138ea", signer.calculateSignature(signer.getStringToSign()));
         sb = new StringBuilder("AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE/20150830/us-east-1/service/aws4_request,"
-                + " SignedHeaders=host;x-amz-date,"
+                + " SignedHeaders=host;my-header1;x-amz-date,"
                 + " Signature=c9d5ea9f3f72853aea855b47ea873832890dbdd183b4468f858259531a5138ea");
         // verify final authorization header value
         assertEquals(sb.toString(), signer.getSigningInformation());

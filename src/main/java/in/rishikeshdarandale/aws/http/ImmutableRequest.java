@@ -10,13 +10,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javax.annotation.concurrent.Immutable;
-
 import in.rishikeshdarandale.aws.AwsSignParams;
 import in.rishikeshdarandale.aws.AwsSigner;
 import in.rishikeshdarandale.aws.utils.DateUtils;
 
-@Immutable
 public final class ImmutableRequest implements Request {
     private final static String HOST_HEADER = "Host";
     public final static String X_AMZ_DATE_HEADER = "X-Amz-Date";
@@ -24,7 +21,7 @@ public final class ImmutableRequest implements Request {
     private transient String path;
     private transient RequestMethod method;
     private transient Map<String, List<String>> queryParams;
-    private transient Map<String, String> headers;
+    private transient Map<String, List<String>> headers;
     private transient byte[] body;
     private transient int connectTimeout;
     private transient int readTimeout;
@@ -36,15 +33,15 @@ public final class ImmutableRequest implements Request {
 
     private ImmutableRequest(final String host, final String path,
             final RequestMethod method, final Map<String, List<String>> queryParams,
-            final Map<String, String> headers, final byte[] body,
+            final Map<String, List<String>> headers, final byte[] body,
             final int connectTimeout, final int readTimeout) {
         this.host = host;
         this.path = path;
         this.method = method;
-        this.queryParams = getImmutableQueryParams(queryParams);
-        HashMap<String, String> newHeaderList = new HashMap<>(headers);
-        newHeaderList.put(HOST_HEADER, this.getHostHeaderValue());
-        this.headers = Collections.unmodifiableMap(new HashMap<>(newHeaderList));
+        this.queryParams = getImmutableMap(queryParams);
+        HashMap<String, List<String>> newHeaderList = new HashMap<>(headers);
+        newHeaderList.put(HOST_HEADER, Arrays.asList(this.getHostHeaderValue()));
+        this.headers = getImmutableMap(newHeaderList);
         this.body = Arrays.copyOf(body, body.length);
         this.connectTimeout = connectTimeout;
         this.readTimeout = readTimeout;
@@ -61,7 +58,7 @@ public final class ImmutableRequest implements Request {
 
     @Override
     public Request queryParams(String name, String value) {
-        Map<String, List<String>> params = getMutableQueryParams(this.queryParams);
+        Map<String, List<String>> params = getMutableMap(this.queryParams);
         if (params.containsKey(name)) {
             params.get(name).add(value);
         } else {
@@ -79,8 +76,12 @@ public final class ImmutableRequest implements Request {
 
     @Override
     public Request header(String name, String value) {
-        Map<String, String> headers = getNewMap(this.headers);
-        headers.put(name, value);
+        Map<String, List<String>> headers = getMutableMap(this.headers);
+        if (headers.containsKey(name)) {
+            headers.get(name).add(value);
+        } else {
+            headers.put(name, Arrays.asList(value));
+        }
         return new ImmutableRequest(this.host, this.path, this.method, this.queryParams,
                 headers, this.body, this.connectTimeout, this.readTimeout);
     }
@@ -125,30 +126,27 @@ public final class ImmutableRequest implements Request {
             .append(uri.getPath())
             .append(this.getQueryString())
             .append(" HTTP/1.1\n");
-        this.headers.forEach((k,v) -> text.append(String.format("%s: %s\n", k, v)));
+        this.headers.forEach((k,v) -> {
+            v.stream()
+                .forEach(value -> text.append(String.format("%s: %s\n", k, value)));
+        });
         return text.append('\n')
             .append(new String(this.body)).append("\n")
             .append(">>> End of Request <<<\n")
             .toString();
     }
 
-    private Map<String, String> getNewMap(Map<String, String> unmodifiableMap) {
-        HashMap<String, String> map = new HashMap<>();
-        unmodifiableMap.forEach((k, v) -> map.put(k, v));
-        return map;
-    }
-
-    private Map<String, List<String>> getMutableQueryParams(Map<String, List<String>> immutableQueryParams) {
+    private Map<String, List<String>> getMutableMap(Map<String, List<String>> immutableMap) {
         HashMap<String, List<String>> map = new HashMap<>();
-        queryParams.forEach((k, v) -> {
+        immutableMap.forEach((k, v) -> {
             map.put(k, new ArrayList<>(v));
         });
         return map;
     }
 
-    private Map<String, List<String>> getImmutableQueryParams(Map<String, List<String>> queryParams) {
+    private Map<String, List<String>> getImmutableMap(Map<String, List<String>> mutableMap) {
         HashMap<String, List<String>> map = new HashMap<>();
-        queryParams.forEach((k, v) -> {
+        mutableMap.forEach((k, v) -> {
             map.put(k, Collections.unmodifiableList(v));
         });
         return Collections.unmodifiableMap(map);
@@ -197,7 +195,7 @@ public final class ImmutableRequest implements Request {
         return queryParams;
     }
 
-    public Map<String, String> getHeaders() {
+    public Map<String, List<String>> getHeaders() {
         return headers;
     }
 

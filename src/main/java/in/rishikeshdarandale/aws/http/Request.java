@@ -4,8 +4,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.concurrent.Immutable;
-
 import in.rishikeshdarandale.aws.AwsSignParams;
 
 /**
@@ -14,7 +12,6 @@ import in.rishikeshdarandale.aws.AwsSignParams;
  * @author Rishikesh Darandale <Rishikesh.Darandale@gmail.com>
  *
  */
-@Immutable
 public interface Request {
     /**
      * Add the path to {@code Request} object.
@@ -119,7 +116,7 @@ public interface Request {
      * 
      * @return headers added to this request
      */
-    Map<String, String> getHeaders();
+    Map<String, List<String>> getHeaders();
     /**
      * Convenience method too get the query params of this request
      * 

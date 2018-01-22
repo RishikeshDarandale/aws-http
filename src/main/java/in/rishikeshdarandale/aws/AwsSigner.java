@@ -1,6 +1,7 @@
 package in.rishikeshdarandale.aws;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -130,18 +131,25 @@ public class AwsSigner {
 
     // task 1.4
     String getCanonicalHeaderString() {
-        Map<String, String> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        Map<String, List<String>> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         map.putAll(this.request.getHeaders());
         return map
                 .keySet()
                 .stream()
                 .map(key -> key.toLowerCase())
                 .sorted()
-                .map(key -> {
+                .map( key -> {
+                    String multiValue = map.get(key).stream().map(value -> {
+                        return new StringBuilder()
+                                    .append(value.trim().replaceAll(" +", " ")) // trim all the inner spaces
+                                    .toString();
+                    }).collect(Collectors.joining(","));
+
                     return new StringBuilder(key)
                             .append(":")
-                            .append(map.get(key).trim().replaceAll(" +", " "))
-                            .append("\n").toString();
+                            .append(multiValue)
+                            .append("\n")
+                            .toString();
                 }).collect(Collectors.joining());
     }
 

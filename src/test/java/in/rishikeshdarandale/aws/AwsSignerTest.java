@@ -159,5 +159,33 @@ public class AwsSignerTest {
                 .header("My-Header1", "value2")
                 .header("My-Header1", "value1")
                 .header("X-Amz-Date", "20150830T123600Z");
+        AwsSigner signer = new AwsSigner(request, params);
+        StringBuilder sb = new StringBuilder()
+                .append("GET").append("\n")
+                .append("/").append("\n")
+                .append("\n")
+                .append("host:example.amazonaws.com").append("\n")
+                .append("my-header1:value2,value2,value1").append("\n")
+                .append("x-amz-date:20150830T123600Z").append("\n")
+                .append("\n")
+                .append("host;my-header1;x-amz-date").append("\n")
+                .append("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");
+        // verify canonical request
+        assertEquals(sb.toString(), signer.getCanonicalRequest());
+        sb = new StringBuilder()
+                .append("AWS4-HMAC-SHA256").append("\n")
+                .append(DateUtils.getDate(params.getTimeInMillis(), "yyyyMMdd'T'HHmmss'Z'")).append("\n")
+                .append(DateUtils.getDate(params.getTimeInMillis(), "yyyyMMdd"))
+                .append("/us-east-1/service/aws4_request").append("\n")
+                .append("dc7f04a3abfde8d472b0ab1a418b741b7c67174dad1551b4117b15527fbe966c");
+        // verify the string to sign
+        assertEquals(sb.toString(), signer.getStringToSign());
+        // verify the signature value
+        assertEquals("c9d5ea9f3f72853aea855b47ea873832890dbdd183b4468f858259531a5138ea", signer.calculateSignature(signer.getStringToSign()));
+        sb = new StringBuilder("AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE/20150830/us-east-1/service/aws4_request,"
+                + " SignedHeaders=host;x-amz-date,"
+                + " Signature=c9d5ea9f3f72853aea855b47ea873832890dbdd183b4468f858259531a5138ea");
+        // verify final authorization header value
+        assertEquals(sb.toString(), signer.getSigningInformation());
     }
 }

@@ -19,6 +19,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled false
+    }
+}
+
 // Enforce code coverage metrics
 jacocoTestCoverageVerification {
     violationRules {

@@ -3,10 +3,17 @@ package in.rishikeshdarandale.aws.http;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.charset.Charset;
+import java.util.Arrays;
+
 import org.junit.Test;
+
+import in.rishikeshdarandale.aws.AwsSignParams;
+import in.rishikeshdarandale.aws.AwsSigner;
 
 public class ImmutableRequestTest {
     @Test
@@ -42,7 +49,7 @@ public class ImmutableRequestTest {
                 .append("GET /mypath HTTP/1.1\n")
                 .append("Host: www.somehost.com:8080\n")
                 .append("\n")
-                .append(new String(new byte[0])).append("\n")
+                .append(new String(new byte[0], Charset.defaultCharset())).append("\n")
                 .append(">>> End of Request <<<\n");
         assertEquals(sb.toString(), request.toString());
     }
@@ -76,5 +83,39 @@ public class ImmutableRequestTest {
         request2 = request2.body("{}");
         assertTrue(request2.equals(request1));
         assertEquals(request2.hashCode(), request1.hashCode());
+        Request request3 = new ImmutableRequest("http://www.anotherhost.com");
+        assertFalse(request1.equals(request3));
+        assertFalse(request3.equals(new Object()));
+    }
+
+    @Test(expected=UnsupportedOperationException.class)
+    public void testExecute() {
+        Request request = new ImmutableRequest("http://www.somehost.com")
+                .header("Accept", "application/json");
+        request.execute();
+    }
+
+    @Test
+    public void testSign() {
+        Request request = new ImmutableRequest("http://www.somehost.com")
+                .header("Accept", "application/json");
+        AwsSignParams params = new AwsSignParams("id", "secret", "es");
+        Request signedRequest = request.sign(params);
+        assertNotNull(signedRequest.getHeaders().get(AwsSigner.AUTHORIZATION_HEADER));
+        assertEquals(1, signedRequest.getHeaders().get(AwsSigner.AUTHORIZATION_HEADER).size());
+    }
+
+    @Test
+    public void testBody() {
+        Request request = new ImmutableRequest("http://www.somehost.com")
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
+                .body("{\"message\": \"hello world\"}".getBytes(Charset.defaultCharset()));
+        assertTrue(Arrays.equals("{\"message\": \"hello world\"}".getBytes(Charset.defaultCharset()),
+                request.getBody()));
+        byte[] body = request.getBody();
+        body[0] = 9;
+        assertTrue(Arrays.equals("{\"message\": \"hello world\"}".getBytes(Charset.defaultCharset()),
+                request.getBody()));
     }
 }

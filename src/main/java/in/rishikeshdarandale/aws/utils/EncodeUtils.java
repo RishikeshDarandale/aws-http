@@ -2,6 +2,7 @@ package in.rishikeshdarandale.aws.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -88,11 +89,11 @@ public class EncodeUtils {
      * @return
      * @throws Exception
      */
-    public static byte[] HmacSHA256(String data, byte[] key) throws Exception {
+    public static byte[] hmacSHA256(String data, byte[] key) throws Exception {
         String algorithm="HmacSHA256";
         Mac mac = Mac.getInstance(algorithm);
         mac.init(new SecretKeySpec(key, algorithm));
-        return mac.doFinal(data.getBytes("UTF8"));
+        return mac.doFinal(data.getBytes(Charset.defaultCharset()));
     }
 
 

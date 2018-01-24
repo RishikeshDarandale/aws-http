@@ -1,5 +1,6 @@
 package in.rishikeshdarandale.aws;
 
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +64,7 @@ public class AwsSigner {
         return new StringBuilder("AWS4-HMAC-SHA256").append(NEW_LINE)
                 .append(DateUtils.getDate(this.params.getTimeInMillis(), "yyyyMMdd'T'HHmmss'Z'")).append(NEW_LINE)
                 .append(getCredentialScope()).append(NEW_LINE)
-                .append(EncodeUtils.generateHex(getCanonicalRequest().getBytes()))
+                .append(EncodeUtils.generateHex(getCanonicalRequest().getBytes(Charset.defaultCharset())))
                 .toString();
     }
 
@@ -80,7 +81,7 @@ public class AwsSigner {
         String signature = null;
         try {
             byte[] signatureKey = getDerivedSignKey();
-            signature = EncodeUtils.bytesToHex(EncodeUtils.HmacSHA256(stringToSign, signatureKey));
+            signature = EncodeUtils.bytesToHex(EncodeUtils.hmacSHA256(stringToSign, signatureKey));
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -181,10 +182,10 @@ public class AwsSigner {
     // https://docs.aws.amazon.com/general/latest/gr/signature-v4-examples.html#signature-v4-examples-java
     byte[] getDerivedSignKey() throws Exception {
         byte[] kSecret = ("AWS4" + this.params.getAwsAccessSecret()).getBytes("UTF8");
-        byte[] kDate = EncodeUtils.HmacSHA256(DateUtils.getDate(this.params.getTimeInMillis(), "yyyyMMdd"), kSecret);
-        byte[] kRegion = EncodeUtils.HmacSHA256(this.params.getRegion(), kDate);
-        byte[] kService = EncodeUtils.HmacSHA256(this.params.getServiceName(), kRegion);
-        byte[] kSigning = EncodeUtils.HmacSHA256(AWS4_REQUEST_STRING, kService);
+        byte[] kDate = EncodeUtils.hmacSHA256(DateUtils.getDate(this.params.getTimeInMillis(), "yyyyMMdd"), kSecret);
+        byte[] kRegion = EncodeUtils.hmacSHA256(this.params.getRegion(), kDate);
+        byte[] kService = EncodeUtils.hmacSHA256(this.params.getServiceName(), kRegion);
+        byte[] kSigning = EncodeUtils.hmacSHA256(AWS4_REQUEST_STRING, kService);
         return kSigning;
     }
 }

@@ -1,6 +1,7 @@
 package in.rishikeshdarandale.aws.http;
 
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -89,7 +90,7 @@ public final class ImmutableRequest implements Request {
     @Override
     public Request body(String body) {
         return new ImmutableRequest(this.host, this.path, this.method, this.queryParams,
-                this.headers, body.getBytes(), this.connectTimeout, this.readTimeout);
+                this.headers, body.getBytes(Charset.defaultCharset()), this.connectTimeout, this.readTimeout);
     }
 
     @Override
@@ -128,10 +129,10 @@ public final class ImmutableRequest implements Request {
             .append(" HTTP/1.1\n");
         this.headers.forEach((k,v) -> {
             v.stream()
-                .forEach(value -> text.append(String.format("%s: %s\n", k, value)));
+                .forEach(value -> text.append(String.format("%s: %s%n", k, value)));
         });
         return text.append('\n')
-            .append(new String(this.body)).append("\n")
+            .append(new String(this.body, Charset.defaultCharset())).append("\n")
             .append(">>> End of Request <<<\n")
             .toString();
     }
@@ -174,39 +175,48 @@ public final class ImmutableRequest implements Request {
         return "";
     }
 
+    @Override
     public String getHost() {
         return host;
     }
 
+    @Override
     public URI getUri() {
         Objects.requireNonNull(this.host, "Host must be specified for the request");
         return URI.create(this.host + this.path + getQueryString());
     }
 
+    @Override
     public String getPath() {
         return path;
     }
 
+    @Override
     public RequestMethod getMethod() {
         return method;
     }
 
+    @Override
     public Map<String, List<String>> getQueryParams() {
         return queryParams;
     }
 
+    @Override
     public Map<String, List<String>> getHeaders() {
         return headers;
     }
 
+    @Override
     public byte[] getBody() {
         return Arrays.copyOf(this.body, this.body.length);
     }
 
+    @Override
     public int getConnectTimeout() {
         return connectTimeout;
     }
 
+    @Override
     public int getReadTimeout() {
         return readTimeout;
     }

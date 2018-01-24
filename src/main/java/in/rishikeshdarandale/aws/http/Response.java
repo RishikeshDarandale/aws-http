@@ -4,8 +4,23 @@ import java.util.List;
 import java.util.Map;
 
 public interface Response {
+    /**
+     * Get the HTTP response status code
+     * 
+     * @return HTTP response code
+     */
     int status();
+    /**
+     * Get the HTTP response message
+     * 
+     * @return message
+     */
     String message();
+    /**
+     * Get the response as specified {@link Class} T
+     * @param clazz
+     * @return the response in the form of specified {@link Class} T
+     */
     <T> T getAs(Class<T> clazz);
     String body();
     /**

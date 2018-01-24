@@ -27,14 +27,14 @@ public class EncodeUtilsTest extends EncodeUtils {
     @Test
     public void testGenerateHexCode() {
         assertEquals("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                EncodeUtils.generateHex("".getBytes()));
+                EncodeUtils.generateHex("".getBytes(Charset.defaultCharset())));
     }
 
     @Test
     public void testHmacSHA256() throws Exception {
         // below code is generated using https://www.liavaag.org/English/SHA-Generator/HMAC/
         assertEquals("2978f26e613778b12f10dfc2144f01fc82bc3af63dea11f5ec0b58e733fbe2aa", 
-                EncodeUtils.bytesToHex(EncodeUtils.HmacSHA256("plain text", "key".getBytes(Charset.defaultCharset()))));
+                EncodeUtils.bytesToHex(EncodeUtils.hmacSHA256("plain text", "key".getBytes(Charset.defaultCharset()))));
     }
 
     @Test

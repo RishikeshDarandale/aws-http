@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 /**
  * Immutable Response Object
@@ -40,14 +41,19 @@ public final class ImmutableResponse extends AbstractImmutable implements Respon
     @Override
     public <T> T getAs(Class<T> clazz) throws CouldNotConvertException {
         String contentType = this.header("Content-Type").get(0);
+        ObjectMapper mapper = null;
         if ("application/json".equals(contentType)) {
-            ObjectMapper mapper = new ObjectMapper();
-                try {
-                    return (T) mapper.readValue(this.binary(), clazz);
-                } catch (IOException e) {
-                    throw new CouldNotConvertException(
-                            "Error while mapping response " + this.body() + " to " + clazz, e);
-                }
+            mapper = new ObjectMapper();
+        } else if ("application/xml".equals(contentType)) {
+            mapper = new XmlMapper();
+        }
+        if (mapper != null) {
+            try {
+                return (T) mapper.readValue(this.binary(), clazz);
+            } catch (IOException e) {
+                throw new CouldNotConvertException(
+                        "Error while mapping response " + this.body() + " to " + clazz, e);
+            }
         }
         return null;
     }

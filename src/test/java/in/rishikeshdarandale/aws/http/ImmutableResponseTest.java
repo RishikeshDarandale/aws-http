@@ -75,12 +75,18 @@ public class ImmutableResponseTest {
         headers.put("Content-Type", Arrays.asList("application/something"));
         Response response1 = new ImmutableResponse(200, "OK",
                 headers, "Hello World".getBytes(Charset.defaultCharset()));
+        headers = new HashMap<>();
+        headers.put("Content-Type", Arrays.asList("application/xml"));
+        Response response2 = new ImmutableResponse(200, "OK",
+                headers, "<message>Hello World<message>".getBytes(Charset.defaultCharset()));
         MessageObject object;
         try {
             object = response.getAs(MessageObject.class);
             assertEquals("Hello World", object.getMessage());
             object = response1.getAs(MessageObject.class);
             assertNull(object);
+            object = response2.getAs(MessageObject.class);
+            assertEquals("Hello World", object.getMessage());
         } catch (CouldNotConvertException e) {
             e.printStackTrace();
         }

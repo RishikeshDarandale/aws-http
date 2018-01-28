@@ -2,7 +2,6 @@ package in.rishikeshdarandale.aws.http;
 
 import java.net.URI;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,7 +14,13 @@ import in.rishikeshdarandale.aws.AwsSignParams;
 import in.rishikeshdarandale.aws.AwsSigner;
 import in.rishikeshdarandale.aws.utils.DateUtils;
 
-public final class ImmutableRequest implements Request {
+/**
+ * Immutable Request Object
+ *
+ * @author Rishikesh Darandale <Rishikesh.Darandale@gmail.com>
+ *
+ */
+public final class ImmutableRequest extends AbstractImmutable implements Request {
     private final static String HOST_HEADER = "Host";
     public final static String X_AMZ_DATE_HEADER = "X-Amz-Date";
     private transient String host;
@@ -135,22 +140,6 @@ public final class ImmutableRequest implements Request {
             .append(new String(this.body, Charset.defaultCharset())).append("\n")
             .append(">>> End of Request <<<\n")
             .toString();
-    }
-
-    private Map<String, List<String>> getMutableMap(Map<String, List<String>> immutableMap) {
-        HashMap<String, List<String>> map = new HashMap<>();
-        immutableMap.forEach((k, v) -> {
-            map.put(k, new ArrayList<>(v));
-        });
-        return map;
-    }
-
-    private Map<String, List<String>> getImmutableMap(Map<String, List<String>> mutableMap) {
-        HashMap<String, List<String>> map = new HashMap<>();
-        mutableMap.forEach((k, v) -> {
-            map.put(k, Collections.unmodifiableList(v));
-        });
-        return Collections.unmodifiableMap(map);
     }
 
     private String getHostHeaderValue() {

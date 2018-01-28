@@ -17,11 +17,18 @@ public interface Response {
      */
     String message();
     /**
-     * Get the response as specified {@link Class} T
+     * Get the response as a object
+     *
      * @param clazz
-     * @return the response in the form of specified {@link Class} T
+     * @return
+     * @throws CouldNotConvertException
      */
-    <T> T getAs(Class<T> clazz);
+    <T> T getAs(Class<T> clazz) throws CouldNotConvertException;
+    /**
+     * Get the body
+     * 
+     * @return
+     */
     String body();
     /**
      * Raw body as a an array of bytes.

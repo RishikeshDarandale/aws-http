@@ -1,4 +1,12 @@
 ###
+# jekyll
+###
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+###
 # Java
 ###
 # Compiled class file

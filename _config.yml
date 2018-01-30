@@ -1,0 +1,31 @@
+# Setup
+title:            aws-http
+tagline:          'A fluent http client library for aws'
+description:      'A simple way to do an http request to <a href="http://jekyllrb.com" target="_blank">AWS</a> resource with signing algorithm v4. Made by <a href="https://rishikeshdarandale.github.io" target="_blank">Rishikeksh Darandale</a>.'
+url:              https://rishikeshdarandale.github.io
+baseurl:          /aws-http
+
+# Reading Files
+include:
+  - .htaccess
+  - _pages
+exclude:
+  - "*.sublime-project"
+  - "*.sublime-workspace"
+  - vendor
+  - .asset-cache
+  - .bundle
+  - .jekyll-assets-cache
+  - .sass-cache
+  - LICENSE
+  - README
+  - docker-compose.yml
+keep_files:
+  - .git
+encoding: "utf-8"
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+
+# Sass/SCSS
+sass:
+  sass_dir: _sass
+  style: compressed # http://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style

@@ -1,0 +1,20 @@
+.default-wrapper {
+  display: flex;
+  align-items: stretch;
+  
+  &__header {
+    padding: 15px 10px;
+    background: $white;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 10px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  &__content {
+    padding: 20px;
+    min-height: 100vh;
+    width: 100%;
+    transition: all 0.3s;
+  }
+}

@@ -1,0 +1,29 @@
+<nav id="sidebar" class="sidebar">
+  <!-- Sidebar Header -->
+  <div class="sidebar__header">
+    <h3>aws-http documentation</h3>
+  </div>
+
+  <!-- Sidebar Links using sidebar.yml data -->
+{% if site.data.sidebar.toc[0] %}
+  {% for item in site.data.sidebar.toc %}
+    <ul class="sidebar__nav">
+      <li {% if forloop.first%}class="active"{% endif %}><!-- Link with dropdown items -->
+        {% if item.subfolderitems[0] %} 
+        <a class="sidebar__nav__link" href="#menu-{{ forloop.index }}" data-toggle="collapse" aria-expanded="false">{{ item.page }}
+          <i class="fas fa-chevron-circle-down"></i>
+        </a>
+        <ul class="collapse sidebar__nav__flyout" id="menu-{{ forloop.index }}">
+          {% for entry in item.subfolderitems %}
+            <li><a class="sidebar__nav__link" href="{{ entry.url }}">{{ entry.page }}</a></li>
+          {% endfor %}
+        </ul>
+        {% else %}
+          <a class="sidebar__nav__link" href="{{ item.url }}" data-toggle="collapse" aria-expanded="false">{{ item.page }}</a>
+        {% endif %}
+         
+    </ul>
+  {% endfor %}
+{% endif %}
+</nav>
+

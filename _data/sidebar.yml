@@ -1,0 +1,31 @@
+toc:
+  - page: Introduction
+    subfolderitems:
+      - page: Overview
+        url: /
+      - page: JavaDoc
+        url: /thing2.html
+      - page: Releases
+        url: /thing3.html
+  - page: Examples
+    subfolderitems:
+      - page: With JerseyRequest
+        url: /piece1.html
+      - page: With ApacheRequest
+        url: /piece2.html
+      - page: With JDKRequest
+        url: /piece3.html
+  - page: Credits
+    url: /credits.html
+  - page: Others
+    subfolderitems:
+      - page: Credits
+        subsubfolderitems:
+          - page: Subwidget 1
+            url: /subwidget1.html
+          - page: Subwidget 2
+            url: /subwidget2.html
+      - page: Contact
+        url: /widget2.html
+      - page: About
+        url: /widget3.html

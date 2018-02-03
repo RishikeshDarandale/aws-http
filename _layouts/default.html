@@ -11,19 +11,27 @@ layout: compress
   </head>
 
   <body>
+    <div class="default-wrapper">
+      <!-- Sidebar -->
+      {% include sidebar.html%}
 
-    {% include browser-upgrade.html %}
-     
-    <div class="content"> 
-      {{ content }}
-    </div>
+      <!-- Page Content -->
+      <div class="default-wrapper__content">
+        <!-- header --> 
+        <div class="default-wrapper__header">
+          {% include header.html %}
+        </div>
+        {{ content }}  
+      </div>
 
-    <div class="footer">
-      <footer>
-        {% include footer.html %}
-      </footer>
-    </div>
-
+      <!-- footer -->
+      <div class="footer">
+        <footer>
+          {% include footer.html %}
+        </footer>
+      </div>
+    </div>     
+    <!-- inlcude all the scripts related to the application -->
     {% include scripts.html %}
 
   </body>

@@ -88,11 +88,13 @@ public class ImmutableRequestTest {
         assertFalse(request3.equals(new Object()));
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test
     public void testExecute() {
         Request request = new ImmutableRequest("http://www.somehost.com")
                 .header("Accept", "application/json");
-        request.execute();
+        Response response = request.execute();
+        assertEquals(200, response.status());
+        assertEquals("OK", response.message());
     }
 
     @Test

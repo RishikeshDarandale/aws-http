@@ -1,6 +1,8 @@
 package in.rishikeshdarandale.aws.http;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,6 +25,7 @@ import in.rishikeshdarandale.aws.utils.DateUtils;
 public final class ImmutableRequest extends AbstractImmutable implements Request {
     private final static String HOST_HEADER = "Host";
     public final static String X_AMZ_DATE_HEADER = "X-Amz-Date";
+    private transient RequestExecuter executer;
     private transient String host;
     private transient String path;
     private transient RequestMethod method;
@@ -33,14 +36,27 @@ public final class ImmutableRequest extends AbstractImmutable implements Request
     private transient int readTimeout;
 
     public ImmutableRequest(String host) {
-        this(host, "/", RequestMethod.GET, Collections.unmodifiableMap(new HashMap<>()),
+        this(new RequestExecuter() {
+                @Override
+                public Response execute(Request request) {
+                    return new ImmutableResponse(200, "OK", 
+                            new HashMap<>(), "Dummy Response. Please use the correct executer."
+                                .getBytes(Charset.defaultCharset()));
+                }
+             }, host, "/", RequestMethod.GET, Collections.unmodifiableMap(new HashMap<>()),
                 Collections.unmodifiableMap(new HashMap<>()), new byte[0], 0, 0);
     }
 
-    private ImmutableRequest(final String host, final String path,
+    public ImmutableRequest(String host, RequestExecuter executer) {
+        this(executer, host, "/", RequestMethod.GET, Collections.unmodifiableMap(new HashMap<>()),
+                Collections.unmodifiableMap(new HashMap<>()), new byte[0], 0, 0);
+    }
+
+    private ImmutableRequest(final RequestExecuter executer, final String host, final String path,
             final RequestMethod method, final Map<String, List<String>> queryParams,
             final Map<String, List<String>> headers, final byte[] body,
             final int connectTimeout, final int readTimeout) {
+        this.executer = executer;
         this.host = host;
         this.path = path;
         this.method = method;
@@ -58,7 +74,7 @@ public final class ImmutableRequest extends AbstractImmutable implements Request
      */
     @Override
     public Request path(String path) {
-        return new ImmutableRequest(this.host, path, this.method, this.queryParams,
+        return new ImmutableRequest(this.executer, this.host, path, this.method, this.queryParams,
                 this.headers, this.body, this.connectTimeout, this.readTimeout);
     }
 
@@ -70,13 +86,13 @@ public final class ImmutableRequest extends AbstractImmutable implements Request
         } else {
             params.put(name, Arrays.asList(value));
         }
-        return new ImmutableRequest(this.host, this.path, this.method, params,
+        return new ImmutableRequest(this.executer, this.host, this.path, this.method, params,
                 this.headers, this.body, this.connectTimeout, this.readTimeout);
     }
 
     @Override
     public Request method(RequestMethod method) {
-        return new ImmutableRequest(this.host, this.path, method, this.queryParams,
+        return new ImmutableRequest(this.executer, this.host, this.path, method, this.queryParams,
                 this.headers, this.body, this.connectTimeout, this.readTimeout);
     }
 
@@ -88,25 +104,25 @@ public final class ImmutableRequest extends AbstractImmutable implements Request
         } else {
             headers.put(name, Arrays.asList(value));
         }
-        return new ImmutableRequest(this.host, this.path, this.method, this.queryParams,
+        return new ImmutableRequest(this.executer, this.host, this.path, this.method, this.queryParams,
                 headers, this.body, this.connectTimeout, this.readTimeout);
     }
 
     @Override
     public Request body(String body) {
-        return new ImmutableRequest(this.host, this.path, this.method, this.queryParams,
+        return new ImmutableRequest(this.executer, this.host, this.path, this.method, this.queryParams,
                 this.headers, body.getBytes(Charset.defaultCharset()), this.connectTimeout, this.readTimeout);
     }
 
     @Override
     public Request body(byte[] body) {
-        return new ImmutableRequest(this.host, this.path, this.method, this.queryParams,
+        return new ImmutableRequest(this.executer, this.host, this.path, this.method, this.queryParams,
                 this.headers, body, this.connectTimeout, this.readTimeout);
     }
 
     @Override
     public Request timeout(int connect, int read) {
-        return new ImmutableRequest(this.host, this.path, this.method, this.queryParams,
+        return new ImmutableRequest(this.executer, this.host, this.path, this.method, this.queryParams,
                 this.headers, this.body, connect, read);
     }
 
@@ -121,7 +137,7 @@ public final class ImmutableRequest extends AbstractImmutable implements Request
 
     @Override
     public Response execute() {
-        throw new UnsupportedOperationException("This operation is not supported.");
+        return executer.execute(this);
     }
 
     @Override
@@ -157,7 +173,17 @@ public final class ImmutableRequest extends AbstractImmutable implements Request
                     .sorted(Map.Entry.comparingByKey())
                     .map(entry -> {
                         return entry.getValue().stream()
-                                .map(value -> entry.getKey() + "=" + value).collect(Collectors.joining("&"));
+                                .map(value -> {
+                                    String entryString = null;
+                                    try {
+                                         entryString = entry.getKey()
+                                                + "=" + URLEncoder.encode(value, Charset.defaultCharset().toString());
+                                    } catch (UnsupportedEncodingException e) {
+                                        throw new IllegalArgumentException(value + "can not be encoded properly.");
+                                    }
+                                    return entryString;
+                                })
+                                .collect(Collectors.joining("&"));
                     })
                     .collect(Collectors.joining("&"));
         }
@@ -171,7 +197,6 @@ public final class ImmutableRequest extends AbstractImmutable implements Request
 
     @Override
     public URI getUri() {
-        Objects.requireNonNull(this.host, "Host must be specified for the request");
         return URI.create(this.host + this.path + getQueryString());
     }
 

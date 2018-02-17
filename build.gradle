@@ -76,3 +76,8 @@ check.dependsOn jacocoTestCoverageVerification
 release {
   versionPropertyFile = 'build.gradle'
 }
+
+updateVersion.doLast {
+    def buildGradle = file('build.gradle')
+    buildGradle.text = buildGradle.text.replaceFirst(~/version = (\d++\.\d++\.\d++)/, 'version = \'$1\'')
+}

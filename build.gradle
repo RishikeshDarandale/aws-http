@@ -23,9 +23,6 @@ repositories {
   jcenter()
 }
 
-group='io.github.rishikeshdarandale'
-version='1.0.0-SNAPSHOT'
-
 dependencies {
   // This dependency is exported to consumers, that is to say found on their compile classpath.
   // api 'org.apache.commons:commons-math3:3.6.1'
@@ -73,11 +70,3 @@ jacocoTestCoverageVerification {
 
 check.dependsOn jacocoTestCoverageVerification
 
-release {
-  versionPropertyFile = 'build.gradle'
-}
-
-updateVersion.doLast {
-    def buildGradle = file('build.gradle')
-    buildGradle.text = buildGradle.text.replaceFirst(~/version = (\d++\.\d++\.\d++)/, 'version = \'$1\'')
-}

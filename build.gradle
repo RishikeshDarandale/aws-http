@@ -14,12 +14,11 @@ apply plugin: 'com.github.spotbugs'
 // apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 apply plugin: 'java-library'
+apply plugin: 'maven'
 apply plugin: 'net.researchgate.release'
+apply plugin: 'signing'
 
-// In this section you declare where to find the dependencies of your project
 repositories {
-  // Use jcenter for resolving your dependencies.
-  // You can declare any Maven/Ivy/file repository here.
   jcenter()
 }
 
@@ -28,7 +27,6 @@ dependencies {
   // api 'org.apache.commons:commons-math3:3.6.1'
 
   // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-  // implementation 'com.google.guava:guava:23.0'
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
   implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.4'
   implementation 'org.glassfish.jersey.core:jersey-client:2.26'
@@ -67,6 +65,92 @@ jacocoTestCoverageVerification {
     }
   }
 }
-
+// invoke the coverage verification during check phase
 check.dependsOn jacocoTestCoverageVerification
 
+// Create a jar with javadoc
+task javadocJar(type: Jar) {
+  classifier = 'javadoc'
+  from javadoc
+}
+
+// Create a jar with soruces
+task sourcesJar(type: Jar) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+// hook all the artifacts under artifacts task
+artifacts {
+  archives javadocJar, sourcesJar
+}
+
+// Signing task
+signing {
+  sign configurations.archives
+}
+
+/*
+ * Upload the archives to the OSS Sonatype
+ *
+ * To upload the archives, need to set following properties in ~/.gradle/gradle.properties
+ * ------------------------------------------------
+ * signing.keyId=YourKeyId
+ * signing.password=YourPublicKeyPassword
+ * signing.secretKeyRingFile=PathToYourKeyRingFile
+
+ * ossrhUsername=your-jira-id
+ * ossrhPassword=your-jira-password
+ * ------------------------------------------------
+ */
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name 'aws-http'
+        packaging 'jar'
+        artifactId archivesBaseName
+        version version
+        description 'A fluent http client library for aws'
+        url 'https://rishikeshdarandale.github.io/aws-http/'
+
+        scm {
+          connection 'scm:git:git://github.com/rishikeshdarandale/aws-http.git'
+          developerConnection 'scm:git:git@github.com:rishikeshdarandale/aws-http.git'
+          url 'https://github.com/rishikeshdarandale/aws-http'
+        }
+
+        licenses {
+          license {
+            name 'MIT License'
+            url 'http://www.opensource.org/licenses/mit-license.php'
+          }
+        }
+
+        developers {
+          developer {
+            id 'rishikeshdarandale'
+            name 'Rishikesh Darandale'
+            email 'rishikesh.darandale@gmail.com'
+            url 'https://rishikeshdarandale.github.io'
+          }
+        }
+      }
+    }
+  }
+}
+
+/*
+ * For each release, push the released artifacts to OSS sonatype
+ */
+afterReleaseBuild.dependsOn uploadArchives

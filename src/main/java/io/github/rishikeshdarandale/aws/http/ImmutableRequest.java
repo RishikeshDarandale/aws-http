@@ -19,7 +19,7 @@ import io.github.rishikeshdarandale.aws.utils.DateUtils;
 /**
  * Immutable Request Object
  *
- * @author Rishikesh Darandale <Rishikesh.Darandale@gmail.com>
+ * @author Rishikesh Darandale (Rishikesh.Darandale@gmail.com)
  *
  */
 public final class ImmutableRequest extends AbstractImmutable implements Request {

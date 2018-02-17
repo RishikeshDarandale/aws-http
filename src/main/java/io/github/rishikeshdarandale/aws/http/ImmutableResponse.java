@@ -13,7 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 /**
  * Immutable Response Object
  *
- * @author Rishikesh Darandale <Rishikesh.Darandale@gmail.com>
+ * @author Rishikesh Darandale (Rishikesh.Darandale@gmail.com)
  *
  */
 public final class ImmutableResponse extends AbstractImmutable implements Response {

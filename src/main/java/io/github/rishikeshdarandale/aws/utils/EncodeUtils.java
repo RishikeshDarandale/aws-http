@@ -18,7 +18,7 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * Utility methods for encode functionality
  * 
- * @author Rishikesh Darandale <Rishikesh.Darandale@gmail.com>
+ * @author Rishikesh Darandale (Rishikesh.Darandale@gmail.com)
  *
  */
 public class EncodeUtils {
@@ -34,7 +34,7 @@ public class EncodeUtils {
     /**
      * This utility method to encode the URL with little deviation from {@link URLEncoder#encode(String)}
      *
-     * @param srcString
+     * @param srcString - input string to be encoded
      * @param path
      *          if true then / will not be encoded.
      * @return the encoded string
@@ -62,8 +62,8 @@ public class EncodeUtils {
     /**
      * Generate Hex code of String.
      *
-     * @param data
-     * @return
+     * @param data - byte data to be converted into Hes string
+     * @return the Hex string of the byte data
      */
     public static String generateHex(byte[] data) {
         MessageDigest messageDigest;
@@ -81,13 +81,12 @@ public class EncodeUtils {
     /**
      * Calculate the HMAC 
      *
-     * @See <a href="https://docs.aws.amazon.com/general/latest/gr/signature-v4-examples.html#signature-v4-examples-java">
-     *              Deriving the Signing Key with Java</a>
+     * @see <a href="https://docs.aws.amazon.com/general/latest/gr/signature-v4-examples.html#signature-v4-examples-java">Deriving the Signing Key with Java</a>
      *
-     * @param data
-     * @param key
-     * @return
-     * @throws Exception
+     * @param data - input data
+     * @param key - key for hashing
+     * @return - hash of the input data
+     * @throws Exception - in case of any error during the hashing process
      */
     public static byte[] hmacSHA256(String data, byte[] key) throws Exception {
         String algorithm="HmacSHA256";
@@ -100,10 +99,10 @@ public class EncodeUtils {
     /**
      * Convert byte array to hex array
      * 
-     * @See <a href="https://stackoverflow.com/a/9855338/8101556">
-     *         How to convert a byte array to a hex string in Java?</a>
+     * @see <a href="https://stackoverflow.com/a/9855338/8101556">How to convert a byte array to a hex string in Java?</a>
      *
      * @param bytes that need to be converted into hex
+     * @return string in hex
      */
     public static String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];

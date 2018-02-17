@@ -5,10 +5,8 @@ import java.util.Objects;
 /**
  * This holds the AWS credentials required for signing the HTTP request.
  *
- * @author Rishikesh Darandale <Rishikesh.Darandale@gmailcom>
- * @see <a href="https://docs.aws.amazon.com/general/latest/gr/
- *         aws-sec-cred-types.html#access-keys-and-secret-access-keys">
- *         Access Keys (Access Key ID and Secret Access Key)</a>
+ * @author Rishikesh Darandale (Rishikesh.Darandale@gmailcom)
+ * @see <a href="https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys">Access Keys (Access Key ID and Secret Access Key)</a>
  *
  */
 public class AwsSignParams {

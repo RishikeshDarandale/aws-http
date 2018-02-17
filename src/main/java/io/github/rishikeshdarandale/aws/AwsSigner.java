@@ -12,16 +12,11 @@ import io.github.rishikeshdarandale.aws.http.Request;
 import io.github.rishikeshdarandale.aws.utils.DateUtils;
 import io.github.rishikeshdarandale.aws.utils.EncodeUtils;
 
-// http://www.javaquery.com/2016/01/aws-version-4-signing-process-complete.html
-// https://github.com/aws/aws-sdk-java/blob/master/aws-java-sdk-core/src/main/java/com/amazonaws/auth/AWS4Signer.java
-
 /**
  * This is AWS signer class for HTTP request.
  *
- * @author Rishikesh Darandale <Rishikesh.Darandale@gmail.com>
- * @See <a href="https://docs.aws.amazon.com/general/latest/gr/
- *         sigv4_signing.html">Signing AWS Requests with Signature Version 4
- *         </a>
+ * @author Rishikesh Darandale (Rishikesh.Darandale@gmail.com)
+ * @see <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html">Signing AWS Requests with Signature Version 4</a>
  */
 public class AwsSigner {
     private Request request;
@@ -38,8 +33,7 @@ public class AwsSigner {
     /**
      * Task 1: Create a Canonical Request for Signature Version 4
      * 
-     * @see  <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4-create-canonical-request.html">
-     *       Task 1: Create a Canonical Request for Signature Version 4</a>
+     * @see  <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4-create-canonical-request.html">Task 1: Create a Canonical Request for Signature Version 4</a>
      *
      * @return the canonical request
      */
@@ -56,9 +50,8 @@ public class AwsSigner {
     /**
      * Task 2: Create a String to Sign for Signature Version 4
      * 
-     * @see  <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4-create-string-to-sign.html">
-     *       Task 2: Create a String to Sign for Signature Version 4</a>
-     * @return
+     * @see  <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4-create-string-to-sign.html">Task 2: Create a String to Sign for Signature Version 4</a>
+     * @return string to sign
      */
     public String getStringToSign() {
         return new StringBuilder("AWS4-HMAC-SHA256").append(NEW_LINE)
@@ -71,11 +64,10 @@ public class AwsSigner {
     /**
      * Task 3: Calculate the Signature for AWS Signature Version 4
      *
-     * @see  <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4-calculate-signature.html">
-     *       Task 3: Calculate the Signature for AWS Signature Version 4</a>
-     *
-     * @param stringToSign
-     * @return
+     * @see  <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4-calculate-signature.html">Task 3: Calculate the Signature for AWS Signature Version 4</a>
+     * 
+     * @param stringToSign - string to be signed
+     * @return signed string
      */
     public String calculateSignature(String stringToSign) {
         String signature = null;
@@ -92,8 +84,7 @@ public class AwsSigner {
     /**
      * Task 4: Add the Signing Information to the Request
      *
-     * @see  <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4-add-signature-to-request.html">
-     *       Task 4: Add the Signing Information to the Request</a>
+     * @see  <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4-add-signature-to-request.html">Task 4: Add the Signing Information to the Request</a>
      *
      * @return signing information needed for Authorization header
      */

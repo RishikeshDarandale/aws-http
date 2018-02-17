@@ -9,58 +9,59 @@ import io.github.rishikeshdarandale.aws.AwsSignParams;
 /**
  * A HTTP request
  * 
- * @author Rishikesh Darandale <Rishikesh.Darandale@gmail.com>
+ * @author Rishikesh Darandale (Rishikesh.Darandale@gmail.com)
  *
  */
 public interface Request {
     /**
      * Add the path to {@code Request} object.
      * 
-     * @param path
+     * @param path - api path
      * @return a new {@code Request} object with path
      */
     Request path(String path);
     /**
     * Add queryParam to {@code Request} object
-     * @param name
-     * @param value
+     *
+     * @param name - name of the query param
+     * @param value - value of the query param
      * @return a new {@code Request} object with queryParam
      */
     Request queryParams(String name, String value);
     /**
      * Add a method type to the {@code Request} object
      * 
-     * @param method
+     * @param method - http method to use
      * @return a new {@code Request} object with method
      */
     Request method(RequestMethod method);
     /**
      * Add a request header to the {@code Request} object
      * 
-     * @param name
-     * @param value
+     * @param name - name of the http header
+     * @param value - value of http header
      * @return a new {@code Request} object with header
      */
     Request header(String name, String value);
     /**
      * Add a string body to {@code Request} object
      * 
-     * @param body
+     * @param body - body of the http request
      * @return a new {@code Request} object with body
      */
     Request body(String body);
     /**
      * Add a raw body to {@code Request} object
      * 
-     * @param body
+     * @param body - body of the http request
      * @return a new {@code Request} object with body
      */
     Request body(byte[] body);
     /**
      * Set the timeouts for the {@code Request} object
      * 
-     * @param connect
-     * @param read
+     * @param connect - connect timeout
+     * @param read - read timeout
      * @return a new {@code Request} object
      */
     Request timeout(int connect, int read);
@@ -80,7 +81,7 @@ public interface Request {
      * </pre>
      *
      *
-     * @param params
+     * @param params {@code AwsSignParams} with required details to sign the request
      * @return a new {@code Request} object with signing information
      * 
      * @see <a href="https://tools.ietf.org/html/rfc2616#section-14.8">RFC 2616

@@ -19,15 +19,16 @@ public interface Response {
     /**
      * Get the response as a object
      *
-     * @param clazz
-     * @return
-     * @throws CouldNotConvertException
+     * @param clazz - java class type for getting the response as object of clazz type.
+     * @param <T> - generic type parameter
+     * @return the response in form of object of clazz
+     * @throws CouldNotConvertException - throws if response can not be converted to type clazz
      */
     <T> T getAs(Class<T> clazz) throws CouldNotConvertException;
     /**
      * Get the body
      * 
-     * @return
+     * @return body
      */
     String body();
     /**
@@ -37,6 +38,8 @@ public interface Response {
     byte[] binary();
     /**
      * Get a value of header.
+     * 
+     * @param name - name of http header 
      * @return The headers
      */
     List<String> header(String name);

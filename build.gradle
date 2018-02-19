@@ -103,13 +103,23 @@ signing {
  * ossrhPassword=your-jira-password
  * ------------------------------------------------
  */
+def v_ossrhUsername="FOO"
+def v_ossrhPassword="BAR"
+
+if (project.hasProperty("ossrhUsername")) {
+  v_ossrhUsername = ossrhUsername
+}
+if (project.hasProperty("ossrhPassword")) {
+  v_ossrhPassword = ossrhPassword
+}
+
 uploadArchives {
   repositories {
     mavenDeployer {
       beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
       repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
+        authentication(userName: v_ossrhUsername, password: v_ossrhPassword)
       }
 
       snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {

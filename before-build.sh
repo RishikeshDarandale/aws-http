@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
+  openssl aes-256-cbc -K $encrypted_22bbbead7bbb_key -iv $encrypted_22bbbead7bbb_iv -in my.travis.gpg.enc -out my.travis.gpg -d
+fi

@@ -1,10 +1,11 @@
 language: java
 jdk:
   - oraclejdk8
-install:
-  - ./build.sh
+script:
+  - ./gradlew check jacocoTestReport
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - ./deploy.sh
 env:
   global:
     - secure: Q9gwHcl29aE3JUkBrxN/OPoooHpjIrbRXagdnn3IAVmfROIxhMMbsGTHexRF0alJd3MAjZhQYN+4bJmLvAZ34qBicy3HAVywFXM1cwM9U65NtuyRPZ6tJgk1YPIZ/DUQyXk0yiWYeDWUEhZkjBd5b0GQK3u7ltatO1DiZM6vNOl07bdZgLyxnVOaPKhXKih4uNbSIfdK8oQVRajFTbudjtd4KUzfpQ5No8OXIpYb2b6MmUAMEdhcVI1th2qDHd44DfFJ1Sd1LQr5DnRmxVWnmWS5/Zr5pYH6NS+C20v6/nXMrw4CSjKc6UOYU3DO1cmnjRVKMGPa5lsSZ7o41QrhhZK159O+m6LYLdgMd1NAKbNvSldB5GdimpP/V9P28D0gQhsTwyaNJEWS1QHxLGS+p6yw8C1TXAJzjT81rtz8Ccky2xSb6r74U2IVjazb5qVckgW9j87cjiiKrsQPRmGlSL96hw2hkoYTQMOsFMmZVmJHlYIaB4FuiUN9ML9lW3p2QRj9kYLp9a9vAvMkypor0aVN9bLnvL50eS9loEWXMtOmI4yO63rB68VN6Nx9vItViINLs2AGZw2xYUuxEqUt4Ogrpascwypw+H4D7Yx27aLI6BM1J8xCRf3NYCDgHVJDptGSamXmvcG3Nqn2tpc5LZDs1BIAGbHhhYRSqMRoCdo=

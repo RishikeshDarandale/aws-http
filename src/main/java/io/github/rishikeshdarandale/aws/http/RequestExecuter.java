@@ -1,5 +1,7 @@
 package io.github.rishikeshdarandale.aws.http;
 
+import java.io.IOException;
+
 /**
  * A Request Executer will execute the request
  *
@@ -13,6 +15,7 @@ public interface RequestExecuter {
      *
      * @param request - immutable request object 
      * @return {@code Response}
+     * @throws IOException in case {@link Response} can not be constructed.
      */
-    Response execute(Request request);
+    Response execute(Request request) throws IOException;
 }

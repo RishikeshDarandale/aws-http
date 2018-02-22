@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -93,7 +94,7 @@ public class ImmutableRequestTest {
     }
 
     @Test
-    public void testExecute() {
+    public void testExecute() throws IOException {
         Request request = new ImmutableRequest("http://www.somehost.com")
                 .header("Accept", "application/json");
         Response response = request.execute();

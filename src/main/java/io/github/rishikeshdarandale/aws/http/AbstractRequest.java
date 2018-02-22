@@ -1,5 +1,6 @@
 package io.github.rishikeshdarandale.aws.http;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,11 @@ public abstract class AbstractRequest implements Request {
     @Override
     public Request queryParams(String name, String value) {
         return this.request.queryParams(name, value);
+    }
+
+    @Override
+    public String getQueryString() {
+        return this.request.getQueryString();
     }
 
     @Override
@@ -58,7 +64,7 @@ public abstract class AbstractRequest implements Request {
     }
 
     @Override
-    public Response execute() {
+    public Response execute() throws IOException {
         return this.request.execute();
     }
 

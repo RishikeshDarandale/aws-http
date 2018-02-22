@@ -1,4 +1,4 @@
-package io.github.rishikeshdarandale.aws.http.jersey;
+package io.github.rishikeshdarandale.aws.http.jdk;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,13 +20,11 @@ import io.github.rishikeshdarandale.aws.http.ImmutableResponse;
 import io.github.rishikeshdarandale.aws.http.Request;
 import io.github.rishikeshdarandale.aws.http.RequestMethod;
 import io.github.rishikeshdarandale.aws.http.Response;
-import io.github.rishikeshdarandale.aws.http.jersey.JerseyRequest;
-import io.github.rishikeshdarandale.aws.http.jersey.JerseyRequestExecuter;
 
 @RunWith(MockitoJUnitRunner.class)
-public class JerseyRequestTest {
+public class JdkRequestTest {
     @Mock
-    JerseyRequestExecuter executer;
+    JdkRequestExecuter executer;
 
     @Before
     public void before() {
@@ -34,13 +32,13 @@ public class JerseyRequestTest {
 
     @Test
     public void testGetJerseyRequest() throws IOException {
-        Request request = new JerseyRequest("https://www.somehost.com", executer)
+        Request request = new JdkRequest("https://www.somehost.com", executer)
                 .method(RequestMethod.GET)
                 .path("/mypath")
                 .queryParams("message", "hello*world")
-                .header("Accept", "application/json")
                 .header("Content-Type", "application/json")
-                .body("{}");
+                .timeout(10000, 5000)
+                .body("{\"name\": \"Foo\"}");
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("Content-Type", Arrays.asList("application/json"));
         Response response1 = new ImmutableResponse(200, "OK",
@@ -49,5 +47,5 @@ public class JerseyRequestTest {
         Response response = request.execute();
         assertEquals(response.status(), response.status());
     }
-
 }
+

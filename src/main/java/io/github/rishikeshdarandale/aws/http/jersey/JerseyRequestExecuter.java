@@ -21,6 +21,11 @@ import io.github.rishikeshdarandale.aws.http.Request;
 import io.github.rishikeshdarandale.aws.http.RequestExecuter;
 import io.github.rishikeshdarandale.aws.http.Response;
 
+/**
+ * Implementation of {@link RequestExecuter} using jersey-client
+ * 
+ * @author Rishikesh Darandale (Rishikesh.Darandale@gmail.com)
+ */
 public class JerseyRequestExecuter implements RequestExecuter {
     @Override
     public Response execute(Request request) {

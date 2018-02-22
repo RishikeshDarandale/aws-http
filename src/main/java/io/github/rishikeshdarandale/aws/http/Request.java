@@ -1,5 +1,6 @@
 package io.github.rishikeshdarandale.aws.http;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -92,8 +93,9 @@ public interface Request {
      * Execute the request with {@code Request} object
      * 
      * @return a {@code Response}
+     * @throws IOException throws {@link IOException} if response can not consutructed
      */
-    Response execute();
+    Response execute() throws IOException;
     /**
      * Convenience method too get the host of this request
      * 
@@ -124,6 +126,12 @@ public interface Request {
      * @return query params added to this request
      */
     Map<String, List<String>> getQueryParams();
+    /**
+     * Convenience method too get the query string of this request
+     * 
+     * @return query string constructed using query params
+     */
+    String getQueryString();
     /**
      * Convenience method too get mathod of this request
      * 

@@ -1,5 +1,6 @@
 package io.github.rishikeshdarandale.aws.http;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -136,7 +137,7 @@ public final class ImmutableRequest extends AbstractImmutable implements Request
     }
 
     @Override
-    public Response execute() {
+    public Response execute() throws IOException {
         return executer.execute(this);
     }
 
@@ -167,7 +168,8 @@ public final class ImmutableRequest extends AbstractImmutable implements Request
         return hostString.toString();
     }
 
-    private String getQueryString() {
+    @Override
+    public String getQueryString() {
         if (this.queryParams.size() > 0) {
             return "?" + this.queryParams.entrySet().stream()
                     .sorted(Map.Entry.comparingByKey())

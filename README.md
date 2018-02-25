@@ -3,7 +3,11 @@
 [![Build Status](https://api.travis-ci.org/RishikeshDarandale/aws-http.svg?branch=master)](https://travis-ci.org/RishikeshDarandale/aws-http)
 [![codecov](https://codecov.io/gh/RishikeshDarandale/aws-http/branch/master/graph/badge.svg)](https://codecov.io/gh/RishikeshDarandale/aws-http)
 [![Dependency Status](https://www.versioneye.com/user/projects/5a6e9e390fb24f497047f924/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5a6e9e390fb24f497047f924)
+
+[![Maven Central](https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/io/github/rishikeshdarandale/aws-http/maven-metadata.xml.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22aws-http%22)
+[![Javadocs](http://www.javadoc.io/badge/io.github.rishikeshdarandale/aws-http.svg)](http://www.javadoc.io/doc/io.github.rishikeshdarandale/aws-http)
 [![License MIT](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/rishikeshdarandale/aws-http/blob/master/LICENSE)
+
 
 A fluent http client library for aws
 

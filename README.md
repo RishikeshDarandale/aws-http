@@ -2,7 +2,7 @@
 
 [![Build Status](https://api.travis-ci.org/RishikeshDarandale/aws-http.svg?branch=master)](https://travis-ci.org/RishikeshDarandale/aws-http)
 [![codecov](https://codecov.io/gh/RishikeshDarandale/aws-http/branch/master/graph/badge.svg)](https://codecov.io/gh/RishikeshDarandale/aws-http)
-[![Dependency Status](https://www.versioneye.com/user/projects/5a6e9e390fb24f497047f924/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5a6e9e390fb24f497047f924)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/03ab23fe4a264ab09b01e64df876b1b7)](https://www.codacy.com/app/RishikeshDarandale/aws-http?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RishikeshDarandale/aws-http&amp;utm_campaign=Badge_Grade)
 
 [![Maven Central](https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/io/github/rishikeshdarandale/aws-http/maven-metadata.xml.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22aws-http%22)
 [![Javadocs](http://www.javadoc.io/badge/io.github.rishikeshdarandale/aws-http.svg)](http://www.javadoc.io/doc/io.github.rishikeshdarandale/aws-http)

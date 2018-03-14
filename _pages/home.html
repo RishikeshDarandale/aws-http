@@ -3,21 +3,78 @@ layout: default
 title: Home
 permalink: /
 ---
-
-<div class="jumbotron">
-  <div class="container-fluid">
-    <h1>aws-http</h1>
-    <p class="lead">A fluent http client for aws. This library should be used to access the aws resources over http where aws v4 sign is necessary.</p>
-    <p>
-      <a href="https://travis-ci.org/RishikeshDarandale/aws-http">
-        <img src="https://travis-ci.org/RishikeshDarandale/aws-http.svg?branch=master" />
-      </a>
-      <a href="https://codecov.io/gh/RishikeshDarandale/aws-http">
-        <img src="https://codecov.io/gh/RishikeshDarandale/aws-http/branch/master/graph/badge.svg" />
-      </a>
-      <a href='https://www.versioneye.com/user/projects/5a6e9e390fb24f497047f924'>
-        <img src='https://www.versioneye.com/user/projects/5a6e9e390fb24f497047f924/badge.svg?style=flat-square' alt="Dependency Status" />
-      </a>
-    </p>
+<div class="main-content container-fluid">
+  <div class="row">
+    <div class="d-none d-xs-none d-sm-none d-md-block d-lg-block col-md-2 col-lg-2">
+      <nav id="toc" class="sticky-top" data-toggle="toc"></nav>   
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+      <p>
+        <img src="https://camo.githubusercontent.com/00cdc36956bdea386f2f3d966baaa8c425e0dab1/68747470733a2f2f6170692e7472617669732d63692e6f72672f52697368696b657368446172616e64616c652f6177732d687474702e7376673f6272616e63683d6d6173746572" alt="Build Status" data-canonical-src="https://api.travis-ci.org/RishikeshDarandale/aws-http.svg?branch=master" style="max-width:100%;">
+        <a href="https://codecov.io/gh/RishikeshDarandale/aws-http" rel="nofollow"><img src="https://camo.githubusercontent.com/c4f89c9212daf93cbfca70ab972a2dc6289e91ff/68747470733a2f2f636f6465636f762e696f2f67682f52697368696b657368446172616e64616c652f6177732d687474702f6272616e63682f6d61737465722f67726170682f62616467652e737667" alt="codecov" data-canonical-src="https://codecov.io/gh/RishikeshDarandale/aws-http/branch/master/graph/badge.svg" style="max-width:100%;"></a>
+        <a href="https://www.codacy.com/app/RishikeshDarandale/aws-http?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RishikeshDarandale/aws-http&amp;utm_campaign=Badge_Grade" rel="nofollow"><img src="https://camo.githubusercontent.com/54222cb75b80e6059deca191649e525773a553ea/68747470733a2f2f6170692e636f646163792e636f6d2f70726f6a6563742f62616467652f47726164652f3033616232336665346132363461623039623031653634646638373662316237" alt="Codacy Badge" data-canonical-src="https://api.codacy.com/project/badge/Grade/03ab23fe4a264ab09b01e64df876b1b7" style="max-width:100%;"></a>
+      </p>
+      <hr/> 
+      <h1>Introduction</h1>
+      <p>In my <a href="https://rishikeshdarandale.github.io/cloud/signed-http-request-for-aws-resources/">blog</a> I have introduced about <code>aws-http</code> library.</p>
+      <h2>Usage</h2>
+      <p>Include your maven or gradle project as below:</p>
+      <p>maven:</p>
+      <pre><code class="language-markup">
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>           
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>io.github.rishikeshdarandale<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>aws-http<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">&gt;</span></span>1.0.1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span>
+      </code></pre>
+      <p>gradle:</p>
+      <pre><code class="language-groovy">
+        dependencies {
+          compile 'io.github.rishikeshdarandale:aws-http:1.0.1'
+        }
+      </code></pre>
+      <p>A simple use of the library shown below:</p>
+      <p>gradle:</p>
+      <pre><code class="language-java">
+        MyClass myClassObject = new JdkRequest("https://www.somehost.com")
+              .method(RequestMethod.GET)
+              .path("/mypath")
+              .queryParams("message", "hello*world")
+              .header("Accept", "application/json")
+              .header("Content-Type", "application/json")
+              .body("{}")
+              .sign(AwsSignParams("myAccessKey", "MySecretId", "es"))
+              .execute()
+              .getAs(MyClass.class);
+      </code></pre>
+      <h2><code>SNAPSHOT</code> latest version</h2>
+      <p>One can find the latest code with SNAPSHOT version in <code>snapshot artifactory</code></p>
+      <pre><code class="language-markup">
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repositories</span><span class="token punctuation">&gt;</span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repository</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">&gt;</span></span>oss.sonatype.org<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">&gt;</span></span>https://oss.sonatype.org/content/repositories/snapshots/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">&gt;</span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repository</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repositories</span><span class="token punctuation">&gt;</span></span>
+      </code></pre>
+      <h1>Documentation</h1>
+      <p>The documentation and latest release version is mentioned below:</p>
+      <p>
+        <a href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22aws-http%22" rel="nofollow"><img src="https://camo.githubusercontent.com/2a04dbce013b86dbdf391d57ac88650aa76dae96/68747470733a2f2f696d672e736869656c64732e696f2f6d6176656e2d6d657461646174612f762f687474702f63656e7472616c2e6d6176656e2e6f72672f6d6176656e322f696f2f6769746875622f72697368696b657368646172616e64616c652f6177732d687474702f6d6176656e2d6d657461646174612e786d6c2e737667" alt="Maven Central" data-canonical-src="https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/io/github/rishikeshdarandale/aws-http/maven-metadata.xml.svg" style="max-width:100%;"></a>
+        <a href="http://www.javadoc.io/doc/io.github.rishikeshdarandale/aws-http" rel="nofollow"><img src="https://camo.githubusercontent.com/13bb794e1be48833eb10042573a79544f3e70dae/687474703a2f2f7777772e6a617661646f632e696f2f62616467652f696f2e6769746875622e72697368696b657368646172616e64616c652f6177732d687474702e737667" alt="Javadocs" data-canonical-src="http://www.javadoc.io/badge/io.github.rishikeshdarandale/aws-http.svg" style="max-width:100%;"></a>
+      </p>
+      <hr/>
+      <h1>More Examples</h1>
+      
+      <h1>Credits</h1>
+      <p>
+        <ul>
+          <li><a href="http://www.amihaiemil.com/aboutme/about.html">Mihai</a> for nice <a href="http://www.amihaiemil.com/2017/02/18/decorators-with-tunnels.html">writeup!</a></li>
+          <li><a href="https://github.com/jcabi/jcabi-http">jcabi-http</a></li>
+          <li><a href="https://twitter.com/3rdwave_themes" target="_blank">Xiaoying Riley</a> - This documentation theme is referred from <a href="https://themes.3rdwavemedia.com/website-templates/prettydocs-free-bootstrap-theme-developers-and-startups/">here</a></li>
+          <li><a href="https://afeld.github.io/bootstrap-toc/">bootstrap toc</a></li>
+        </ul>
+      </p>
+    </div>
   </div>
 </div>

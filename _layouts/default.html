@@ -10,27 +10,21 @@ layout: compress
     {% include head.html %}
   </head>
 
-  <body>
-    <div class="default-wrapper">
-      <!-- Sidebar -->
-      {% include sidebar.html%}
-
+  <body data-spy="scroll" data-target="#toc">
+    <div>
+      <!-- header -->
+      {% include header.html %}
       <!-- Page Content -->
-      <div class="default-wrapper__content">
-        <!-- header --> 
-        <div class="default-wrapper__header">
-          {% include header.html %}
-        </div>
+      <div class="py-5 bg-light">
         {{ content }}  
       </div>
-
-      <!-- footer -->
-      <div class="footer">
-        <footer>
-          {% include footer.html %}
-        </footer>
-      </div>
-    </div>     
+    </div>
+    <!-- footer -->
+    <div class="bg-dark text-light py-3 text-center">
+      <footer>
+        {% include footer.html %}
+      </footer>
+    </div>
     <!-- inlcude all the scripts related to the application -->
     {% include scripts.html %}
 

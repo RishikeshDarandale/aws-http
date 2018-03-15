@@ -34,7 +34,6 @@ permalink: /
         }
       </code></pre>
       <p>A simple use of the library shown below:</p>
-      <p>gradle:</p>
       <pre><code class="language-java">
         MyClass myClassObject = new JdkRequest("https://www.somehost.com")
               .method(RequestMethod.GET)
@@ -57,6 +56,7 @@ permalink: /
           <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repository</span><span class="token punctuation">&gt;</span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repositories</span><span class="token punctuation">&gt;</span></span>
       </code></pre>
+      <hr/>
       <h1>Documentation</h1>
       <p>The documentation and latest release version is mentioned below:</p>
       <p>
@@ -65,7 +65,42 @@ permalink: /
       </p>
       <hr/>
       <h1>More Examples</h1>
-      
+      <h2>Getting response as a <code>String</code>:</h2>
+      <pre><code class="language-java">
+        String body = new JdkRequest("https://www.somehost.com")
+              .method(RequestMethod.GET)
+              .path("/mypath")
+              .queryParams("message", "hello*world")
+              .header("Accept", "application/json")
+              .header("Content-Type", "application/json")
+              .body("{}")
+              .sign(AwsSignParams("myAccessKey", "MySecretId", "es"))
+              .execute()
+              .body();
+      </code></pre>
+      <h2>Using with Jersey Client</h2>
+      <p>Include the <code>jersey-client</code> library along with <code>aws-http</code> library.</p>
+      <pre><code class="language-markup">
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>org.glassfish.jersey.core<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>jersey-client<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">&gt;</span></span>2.26<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span>
+      </code></pre>
+      <blockquote><code>aws-http</code> library does not include <code>jersey-client</code> as compile time dependency, thus you need to include it as <code>provided</code> scope.</blockquote>
+      <pre><code class="language-java">
+        String body = new JerseyRequest("https://www.somehost.com")
+              .method(RequestMethod.GET)
+              .path("/mypath")
+              .queryParams("message", "hello*world")
+              .header("Accept", "application/json")
+              .header("Content-Type", "application/json")
+              .body("{}")
+              .sign(AwsSignParams("myAccessKey", "MySecretId", "es"))
+              .execute()
+              .body();
+      </code></pre>
+      <hr/>
       <h1>Credits</h1>
       <p>
         <ul>

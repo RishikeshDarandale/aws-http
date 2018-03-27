@@ -1,0 +1,9 @@
+.toc {
+  position: sticky;
+  top: 1rem;
+  
+  @include media-breakpoint-down(sm) {
+    position: static;
+    margin-bottom: 1.5rem;
+  }
+}

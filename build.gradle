@@ -28,7 +28,7 @@ dependencies {
 
   // This dependency is used internally, and not exposed to consumers on their own compile classpath.
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9.1'
-  implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.9'
+  implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.10.0.pr2'
   implementation 'org.glassfish.jersey.core:jersey-client:2.29'
 
   // Use JUnit test framework

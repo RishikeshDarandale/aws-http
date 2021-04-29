@@ -1,0 +1,23 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "23:30"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.fasterxml.jackson.dataformat:jackson-dataformat-xml
+    versions:
+    - 2.12.1
+    - 2.12.2
+  - dependency-name: com.fasterxml.jackson.core:jackson-databind
+    versions:
+    - 2.12.1
+    - 2.12.2
+  - dependency-name: org.mockito:mockito-core
+    versions:
+    - 3.7.7
+  - dependency-name: junit:junit
+    versions:
+    - 4.13.1
